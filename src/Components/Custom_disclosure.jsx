@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { MdKeyboardArrowDown } from 'react-icons/md';
 import { NavLink, useLocation } from 'react-router-dom';
@@ -6,13 +6,19 @@ import { NavLink, useLocation } from 'react-router-dom';
 export default function Custom_disclosure({
   subIndex,
   subItems,
+  defaultOpen,
   checkScroll,
   activeStyle,
   close_modal,
   App_theme,
-
   data,
 }) {
+  useEffect(() => {
+    if (defaultOpen == true) {
+      setOpen(true);
+    }
+  }, [defaultOpen]);
+
   const location = useLocation();
   const [open, setOpen] = useState(false);
 
@@ -22,11 +28,11 @@ export default function Custom_disclosure({
         <div
           className='flex w-full items-center justify-between py-2 px-4 my-1 text-nav_link rounded-lg cursor-pointer  hover:bg-hover transition duration-200 ease-out hover:ease-in '
           onClick={() => {
-            checkScroll;
+            checkScroll();
             setOpen(!open);
           }}
         >
-          <div className='flex items-center gap-2'>
+          <div className='flex items-center gap-2 '>
             <img
               src={`${import.meta.env.VITE_baseURL}/${
                 App_theme == 'dark' || location.pathname == subItems.destination
@@ -43,8 +49,11 @@ export default function Custom_disclosure({
         </div>
 
         <div
+          id='trigger_div'
           aria-label='Teams Nav'
-          className={` flex-col ml-6 px-3 my-3 border-l-2 border-l-zinc-300 ${open} ? 'flex' : 'hidden'
+          className={` flex-col ml-6 px-3 my-3 duration-700 transition-all liner  border-l-2 border-l-zinc-300 ${
+            open ? 'flex' : 'hidden'
+          } 
           }`}
         >
           {data.map((submenu_items, sub_sub_Index) => {

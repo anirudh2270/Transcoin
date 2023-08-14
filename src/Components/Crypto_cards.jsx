@@ -71,7 +71,11 @@ export const Data_card = memo(function Data_card({
             </div>
           </div>
 
-          <div className={`${IsHover ? 'bg-zinc-100  mt-2' : ''} p-5 pt-0`}>
+          <div
+            className={`${
+              IsHover ? 'bg-zinc-100 dark:bg-[#404040]  mt-2' : ''
+            } p-5 pt-0`}
+          >
             <div className='text-start font-semibold'>
               <motion.h6
                 className='text-sm text-zinc-500'

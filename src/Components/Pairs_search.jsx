@@ -2,6 +2,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useState, React } from 'react';
 import { motion } from 'framer-motion';
 import { useSelector } from 'react-redux';
+import Pair_search_skeleton from '../Loading_Skeletons/Pair_search_skeleton.jsx';
 
 export default function Pair_search({
   baseAsset,
@@ -13,6 +14,7 @@ export default function Pair_search({
   let [search, setSearch] = useState('');
   let [IsHover, set_IsHover] = useState(false);
   const prices = useSelector((state) => state.Prices.data);
+  const App_theme = useSelector((state) => state.App_theme.mode);
   const btn_index = index;
 
   const searching = () => {
@@ -62,14 +64,18 @@ export default function Pair_search({
           handle_selected_pair(pair.symbol);
         }}
         key={index}
-        className='px-3 cursor-pointer py-2 rounded-lg font-semibold text-gray-600 hover:bg-zinc-100 ease-in-out duration-300 '
+        className='px-3 cursor-pointer py-2 rounded-lg font-semibold hover:bg-zinc-100 ease-in-out duration-300 '
       >
         <div className='grid grid-cols-3 gap-4  font-semibold'>
           <div>
-            {pair?.symbol.replace('USDT', '')}
-            <span className=' text-sm  text-gray-400'>/USDT</span>
+            <span> {pair?.symbol.replace('USDT', '')}</span>
+            <span className=' text-sm  text-gray-400 dark:text-[#6a6a6a]'>
+              /USDT
+            </span>
           </div>
-          <div className='text-end  font-bold'>${Number(pair.lastPrice)}</div>
+          <div className='text-end font-bold'>
+            <span>${Number(pair.lastPrice)}</span>
+          </div>
           <div
             className={`${
               Number(pair.priceChangePercent) < 0
@@ -77,7 +83,7 @@ export default function Pair_search({
                 : 'text-success'
             } text-end text-sm font-bold`}
           >
-            {Number(pair.priceChangePercent).toFixed(2)}%{' '}
+            {Number(pair.priceChangePercent).toFixed(2)}%
             <span>
               <i
                 className={`${
@@ -122,7 +128,7 @@ export default function Pair_search({
       </div>
 
       <Transition appear show={isOpen} as={Fragment}>
-        <Dialog as='div' className='relative z-10' onClose={closeModal}>
+        <Dialog as='div' className='relative z-10 ' onClose={closeModal}>
           <Transition.Child
             as={Fragment}
             enter='ease-out duration-300'
@@ -146,13 +152,15 @@ export default function Pair_search({
                 leaveFrom='opacity-100 scale-100'
                 leaveTo='opacity-0 scale-95'
               >
-                <Dialog.Panel className='w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all'>
+                <Dialog.Panel className='w-full max-w-md transform overflow-hidden rounded-2xl bg-body_secondary p-6 text-left align-middle shadow-xl transition-all'>
                   <div className='flex justify-between items-center'>
                     <Dialog.Title
                       as='h3'
                       className='text-lg font-medium leading-6 text-gray-900'
                     >
-                      {search == '' ? 'Top searches' : 'Search results'}
+                      <h3>
+                        {search == '' ? 'Top searches' : 'Search results'}
+                      </h3>
                     </Dialog.Title>
 
                     <div
@@ -170,7 +178,11 @@ export default function Pair_search({
                             x: !IsHover && search == '' ? '0rem' : '2rem',
                           }}
                           transition={{ duration: 0.7 }}
-                          src='/img/search.png'
+                          src={
+                            App_theme == 'dark'
+                              ? '/img/search_dark.png'
+                              : '/img/search.png'
+                          }
                           width={35}
                           loading='lazy'
                           alt=''
@@ -198,16 +210,22 @@ export default function Pair_search({
                         }}
                         placeholder='Search'
                         className={`w-full py-1 pl-10
-                         text-gray-500 border border-gray-200 rounded-2xl focus:ring-gray-200 focus:border-gray-200
+                         text-gray-500 border bg-body_secondary border-gray-200 dark:border-zinc-700 rounded-2xl focus:ring-gray-200 focus:border-gray-200
                       `}
                       ></motion.input>
                     </div>
                   </div>
 
                   <div className='grid grid-cols-3 gap-4 font-semibold mt-7 pe-7 ps-3'>
-                    <div>Pair</div>
-                    <div className='text-end'>Price</div>
-                    <div className='text-end'>Change</div>
+                    <div>
+                      <span>Pair</span>
+                    </div>
+                    <div className='text-end'>
+                      <span>Price</span>
+                    </div>
+                    <div className='text-end'>
+                      <span>Change</span>
+                    </div>
                   </div>
 
                   <div className='my-2 py-2 overflow-auto h-[15rem]'>
@@ -222,7 +240,7 @@ export default function Pair_search({
                             })}
                       </ul>
                     ) : (
-                      'Loading...'
+                      <Pair_search_skeleton />
                     )}
                   </div>
                 </Dialog.Panel>

@@ -18,6 +18,8 @@ export default {
         nav_link: 'var(--nav_link)',
         dropdown: 'var(--dropdown)',
         hover: 'var(--hover)',
+        skeleton: 'var(--skeleton)',
+        skeleton_secondary: 'var(--skeleton_secondary)',
       },
     },
   },

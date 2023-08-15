@@ -5,6 +5,7 @@ import Crypto_cards_skelton from '../Loading_Skeletons/Crypto_cards_skelton.jsx'
 import { motion } from 'framer-motion';
 import loadable from '@loadable/component';
 import { useSelector, shallowEqual } from 'react-redux';
+import { Link } from 'react-router-dom';
 const Pair_search = loadable(() => import('../Components/Pairs_search.jsx'));
 
 export const Data_card = memo(function Data_card({
@@ -32,12 +33,13 @@ export const Data_card = memo(function Data_card({
           id='dashbord_crypto_cards'
           onMouseEnter={() => set_IsHover(true)}
           onMouseLeave={() => set_IsHover(false)}
-          className={`py-4 pb-7 bg-body_secondary w-full ease-in-out transition-all duration-300 rounded-2xl  text-center overflow-hidden  ${
+          className={`py-4 pb-7 bg-body_secondary w-full ease-in-out transition-all duration-300 rounded-2xl  text-center   ${
             IsHover
               ? 'drop-shadow-2xl h-[auto] absolute z-[999]'
-              : 'h-[6rem] relative '
+              : 'h-[6rem] relative overflow-hidden'
           }`}
         >
+          {/* card header */}
           <div className='flex gap-3 justify-between  items-center px-5'>
             <span className='font-semibold text-left text-lg'>
               <Pair_search
@@ -71,9 +73,10 @@ export const Data_card = memo(function Data_card({
             </div>
           </div>
 
+          {/* stats section */}
           <div
             className={`${
-              IsHover ? 'bg-zinc-100 dark:bg-[#404040]  mt-2' : ''
+              IsHover ? 'bg-zinc-100 dark:bg-[#2b2b2b]  mt-2' : ''
             } p-5 pt-0`}
           >
             <div className='text-start font-semibold'>
@@ -95,16 +98,14 @@ export const Data_card = memo(function Data_card({
                 animate={{ y: IsHover ? '15px' : '-20px' }}
               >
                 {live_data.lastPrice ? (
-                  <span
-                    className={`${IsHover ? 'text-black' : ' text-[#808080] '}`}
-                  >
+                  <span className={`${IsHover ? '' : ' text-[#808080] '}`}>
                     <span
                       className={`text-base ${
-                        IsHover ? 'text-black' : ' text-[#808080] '
+                        IsHover ? '' : ' text-[#808080] '
                       }`}
                     >
                       $
-                    </span>{' '}
+                    </span>
                     {Number(live_data.lastPrice).toFixed(2)}
                   </span>
                 ) : (
@@ -173,6 +174,7 @@ export const Data_card = memo(function Data_card({
             </div>
           </div>
 
+          {/* assets info */}
           <div className='flex px-5 flex-wrap justify-between items-center gap-5 my-2 text-start font-semibold'>
             <div>
               <motion.h6
@@ -223,6 +225,42 @@ export const Data_card = memo(function Data_card({
                 {balance ? balance.locked : 0}
               </motion.h2>
             </div>
+          </div>
+
+          {/* actions */}
+          <div className='flex gap-3 items-center relative bottom-[-45px] justify-end right-4'>
+            <Link className='hover:scale-125 hover:drop-shadow-2xl transition-all ease-in-out duration-200'>
+              <img
+                src='/img/deposit.png'
+                className='drop-shadow-xl rounded-full border'
+                width={40}
+                alt=''
+              />
+            </Link>
+            <Link className=''>
+              <img
+                src='/img/deposit.png'
+                className='drop-shadow-xl rounded-full border'
+                width={40}
+                alt=''
+              />
+            </Link>
+            <Link className=''>
+              <img
+                src='/img/deposit.png'
+                className='drop-shadow-xl rounded-full border'
+                width={40}
+                alt=''
+              />
+            </Link>
+            <Link className=''>
+              <img
+                src='/img/deposit.png'
+                className='drop-shadow-xl rounded-full border'
+                width={40}
+                alt=''
+              />
+            </Link>
           </div>
         </div>
       ) : (

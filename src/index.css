@@ -45,6 +45,8 @@ html {
   --danger: rgb(246, 70, 93);
   --nav_link: #515565;
   --hover: rgb(244, 244, 245);
+  --skeleton: rgb(209 213 219);
+  --skeleton_secondary: rgb(229 231 235);
 }
 
 .dark {
@@ -58,6 +60,8 @@ html {
   --nav_link: #d8d8d8;
   --dropdown: #292929;
   --hover: #2a2a2d;
+  --skeleton: #414141;
+  --skeleton_secondary: #383838;
 }
 
 h1,
@@ -69,6 +73,10 @@ h6,
 p,
 span {
   color: var(--text_primary);
+}
+
+.clip-circle {
+  clip-path: circle();
 }
 
 .layout_margin {
@@ -175,18 +183,27 @@ details:open {
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: var(--body);
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #c0c0c0;
+  background: rgb(222, 222, 222);
+  border-radius: 2rem;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: rgb(45, 45, 45);
   border-radius: 2rem;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: #949494;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #91919155;
 }
 
 #notFound {
@@ -307,7 +324,6 @@ details:open {
   transform-origin: left bottom;
   transform: perspective(1000px) rotateX(-10deg) rotateY(10deg) rotateZ(2deg);
 }
-
 
 @media screen and (max-width: 768px) {
   #notFound {

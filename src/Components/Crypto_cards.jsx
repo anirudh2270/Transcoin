@@ -229,7 +229,10 @@ export const Data_card = memo(function Data_card({
 
           {/* actions */}
           <div className='flex gap-3 items-center relative bottom-[-45px] justify-end right-4'>
-            <Link className='hover:scale-125 hover:drop-shadow-2xl transition-all ease-in-out duration-200'>
+            <Link
+              to='/despote'
+              className='hover:scale-110 hover:drop-shadow-2xl transition-all ease-in-out duration-200'
+            >
               <img
                 src='/img/deposit.png'
                 className='drop-shadow-xl rounded-full border'
@@ -237,7 +240,10 @@ export const Data_card = memo(function Data_card({
                 alt=''
               />
             </Link>
-            <Link className=''>
+            <Link
+              to='/despote'
+              className='hover:scale-110 hover:drop-shadow-2xl transition-all ease-in-out duration-200'
+            >
               <img
                 src='/img/deposit.png'
                 className='drop-shadow-xl rounded-full border'
@@ -245,7 +251,10 @@ export const Data_card = memo(function Data_card({
                 alt=''
               />
             </Link>
-            <Link className=''>
+            <Link
+              to='/despote'
+              className='hover:scale-110 hover:drop-shadow-2xl transition-all ease-in-out duration-200'
+            >
               <img
                 src='/img/deposit.png'
                 className='drop-shadow-xl rounded-full border'
@@ -253,7 +262,10 @@ export const Data_card = memo(function Data_card({
                 alt=''
               />
             </Link>
-            <Link className=''>
+            <Link
+              to='/account/security/?sdsd=anirudh'
+              className='hover:scale-110 hover:drop-shadow-2xl transition-all ease-in-out duration-200'
+            >
               <img
                 src='/img/deposit.png'
                 className='drop-shadow-xl rounded-full border'

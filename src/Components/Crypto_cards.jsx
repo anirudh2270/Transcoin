@@ -5,12 +5,14 @@ import Crypto_cards_skelton from '../Loading_Skeletons/Crypto_cards_skelton.jsx'
 import { motion } from 'framer-motion';
 import loadable from '@loadable/component';
 import { useSelector, shallowEqual } from 'react-redux';
+import { Tooltip } from 'react-tooltip';
 import { Link } from 'react-router-dom';
 const Pair_search = loadable(() => import('../Components/Pairs_search.jsx'));
 
 export const Data_card = memo(function Data_card({
   data,
   index,
+  App_theme,
   update_Selected_pairs,
   binance_pairs = [],
 }) {
@@ -230,49 +232,82 @@ export const Data_card = memo(function Data_card({
           {/* actions */}
           <div className='flex gap-3 items-center relative bottom-[-45px] justify-end right-4'>
             <Link
+              data-tooltip-id='deposit'
+              data-tooltip-content='deposit'
+              data-tooltip-place='bottom'
               to='/despote'
               className='hover:scale-110 hover:drop-shadow-2xl transition-all ease-in-out duration-200'
             >
               <img
-                src='/img/deposit.png'
-                className='drop-shadow-xl rounded-full border'
+                src={
+                  App_theme == 'dark'
+                    ? '/img/deposit_dark.png'
+                    : '/img/deposit.png'
+                }
+                className='drop-shadow-xl rounded-full border dark:border-[#373737]'
                 width={40}
                 alt=''
               />
             </Link>
+            <Tooltip id='deposit' />
+
             <Link
+              data-tooltip-id='withdraw'
+              data-tooltip-content='Withdraw'
+              data-tooltip-place='bottom'
               to='/despote'
               className='hover:scale-110 hover:drop-shadow-2xl transition-all ease-in-out duration-200'
             >
               <img
-                src='/img/deposit.png'
-                className='drop-shadow-xl rounded-full border'
+                src={
+                  App_theme == 'dark'
+                    ? '/img/withdraw_dark.png'
+                    : '/img/withdraw.png'
+                }
+                className='drop-shadow-xl rounded-full border dark:border-[#373737]'
                 width={40}
                 alt=''
               />
             </Link>
+            <Tooltip id='withdraw' />
+
             <Link
+              data-tooltip-id='convert'
+              data-tooltip-content='Convert'
+              data-tooltip-place='bottom'
               to='/despote'
               className='hover:scale-110 hover:drop-shadow-2xl transition-all ease-in-out duration-200'
             >
               <img
-                src='/img/deposit.png'
-                className='drop-shadow-xl rounded-full border'
+                src={
+                  App_theme == 'dark'
+                    ? '/img/convert_dark.png'
+                    : '/img/convert.png'
+                }
+                className='drop-shadow-xl rounded-full border dark:border-[#373737]'
                 width={40}
                 alt=''
               />
             </Link>
+            <Tooltip id='convert' />
+
             <Link
+              data-tooltip-id='swap'
+              data-tooltip-content='Swap'
+              data-tooltip-place='bottom'
               to='/account/security/?sdsd=anirudh'
               className='hover:scale-110 hover:drop-shadow-2xl transition-all ease-in-out duration-200'
             >
               <img
-                src='/img/deposit.png'
-                className='drop-shadow-xl rounded-full border'
+                src={
+                  App_theme == 'dark' ? '/img/swap_dark.png' : '/img/swap.png'
+                }
+                className='drop-shadow-xl rounded-full border dark:border-[#373737]'
                 width={40}
                 alt=''
               />
             </Link>
+            <Tooltip id='swap' />
           </div>
         </div>
       ) : (
@@ -283,6 +318,7 @@ export const Data_card = memo(function Data_card({
 });
 
 export const Crypto_cards = memo(function Crypto_cards({ binance_pairs }) {
+  const App_theme = useSelector((state) => state.App_theme.mode);
   const [selected_pairs, setSelected_pairs] = useState([
     'BTCUSDT',
     'ETHUSDT',
@@ -309,6 +345,7 @@ export const Crypto_cards = memo(function Crypto_cards({ binance_pairs }) {
                 index={index}
                 binance_pairs={binance_pairs}
                 data={data}
+                App_theme={App_theme}
               />
             </ErrorBoundary>
           );

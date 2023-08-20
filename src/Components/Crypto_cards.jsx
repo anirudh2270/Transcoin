@@ -233,7 +233,7 @@ export const Data_card = memo(function Data_card({
           <div className='flex gap-3 items-center relative bottom-[-45px] justify-end right-4'>
             <Link
               data-tooltip-id='deposit'
-              data-tooltip-content='deposit'
+              data-tooltip-content='Deposit'
               data-tooltip-place='bottom'
               to='/despote'
               className='hover:scale-110 hover:drop-shadow-2xl transition-all ease-in-out duration-200'
@@ -292,22 +292,22 @@ export const Data_card = memo(function Data_card({
             <Tooltip id='convert' />
 
             <Link
-              data-tooltip-id='swap'
-              data-tooltip-content='Swap'
+              data-tooltip-id='trade'
+              data-tooltip-content='Trade'
               data-tooltip-place='bottom'
               to='/account/security/?sdsd=anirudh'
               className='hover:scale-110 hover:drop-shadow-2xl transition-all ease-in-out duration-200'
             >
               <img
                 src={
-                  App_theme == 'dark' ? '/img/swap_dark.png' : '/img/swap.png'
+                  App_theme == 'dark' ? '/img/trade_dark.png' : '/img/trade.png'
                 }
                 className='drop-shadow-xl rounded-full border dark:border-[#373737]'
                 width={40}
                 alt=''
               />
             </Link>
-            <Tooltip id='swap' />
+            <Tooltip id='trade' />
           </div>
         </div>
       ) : (

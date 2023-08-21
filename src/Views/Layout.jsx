@@ -35,7 +35,7 @@ export default function Layout() {
           {/* main layout */}
           <div className='mx-auto xxl:container' id='main'>
             <div className='flex '>
-              <div className='fixed hidden w-72 md:block'>
+              <div className='fixed hidden hover:drop-shadow-2xl transition-all duration-700 ease-in-out w-72 md:block'>
                 <Sidebar />
               </div>
               <div className='flex-1'>

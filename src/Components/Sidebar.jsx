@@ -38,7 +38,7 @@ export default function Sidebar() {
       transition={{ delay: 0.5, duration: 0.7 }}
     >
       <div
-        className='flex flex-col m-4 rounded-3xl  relative bg-body_secondary drop-shadow-2xl whitespace-nowrap'
+        className='flex flex-col m-4 rounded-3xl  relative bg-body_secondary  whitespace-nowrap'
         id='sidebar'
       >
         <div className='p-6'>

@@ -177,7 +177,7 @@ export const Data_card = memo(function Data_card({
           </div>
 
           {/* assets info */}
-          <div className='flex px-5 flex-wrap justify-between items-center gap-5 my-2 text-start font-semibold'>
+          <div className='flex px-5 flex-wrap justify-between items-center gap-5 text-start font-semibold'>
             <div>
               <motion.h6
                 className='text-sm text-zinc-500'

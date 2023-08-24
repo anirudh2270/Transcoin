@@ -4,6 +4,7 @@ import Transitions from '../Components/Motion.jsx';
 import { Crypto_cards } from '../Components/Crypto_cards.jsx';
 import { useCurrency_pairsQuery } from '../Services/apiSlice.jsx';
 import Page_header from '../Components/Page_header.jsx';
+import Convert_crypto from '../Components/Convert_crypto.jsx';
 
 export default function Dashborad() {
   const binance_pairs = useCurrency_pairsQuery();
@@ -19,7 +20,7 @@ export default function Dashborad() {
 
       {/* history */}
       <div className='my-10 flex gap-8 flex-wrap'>
-        <div className=' flex-auto w-[60%]'>
+        <div className=' flex-auto w-[50%]'>
           <div className='flex justify-between items-center flex-wrap'>
             <h3 className='font-semibold text-zinc-400'>Transaction History</h3>
             <a href='' className='font-semibold text-sm text-[#F97791]'>
@@ -32,8 +33,12 @@ export default function Dashborad() {
           </div>
         </div>
 
-        <div className='bg-white rounded-lg p-4 flex-auto'>
-          <h3 className='font-semibold text-zinc-600'>Transaction History</h3>
+        {/* convert */}
+        <div className='flex-grow bg-body_secondary w-min rounded-lg p-4 '>
+          <h4 className='font-semibold'>Convert Crypto</h4>
+          <div className='mt-5'>
+            <Convert_crypto />
+          </div>
         </div>
       </div>
     </Transitions>

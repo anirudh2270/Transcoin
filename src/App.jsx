@@ -5,10 +5,11 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Layout from './Views/Layout.jsx';
 import { Toaster } from 'react-hot-toast';
 import { useSelector } from 'react-redux';
+import Dashborad from './Views/Dashboard.jsx';
 const Login = loadable(() => import('./Views/Login.jsx'));
 const Page_notFound = loadable(() => import('./Views/Page_notFound.jsx'));
 const Account_security = loadable(() => import('./Views/Account_security.jsx'));
-const Dashboard = loadable(() => import('./Views/Dashboard.jsx'));
+// const Dashboard = loadable(() => import('./Views/Dashboard.jsx'));
 
 function App() {
   const App_theme = useSelector((state) => state.App_theme.mode);
@@ -24,7 +25,7 @@ function App() {
         <Routes>
           <Route path='/login' element={<Login />} />
           <Route element={<Layout />}>
-            <Route path='/' element={<Dashboard />} />
+            <Route path='/' element={<Dashborad />} />
             <Route path='/account/security' element={<Account_security />} />
             <Route path='*' element={<Page_notFound />} />
           </Route>

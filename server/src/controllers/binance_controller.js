@@ -1,4 +1,4 @@
-const { Test_postRequest } = require('../helpers/Api');
+const { Test_postRequest, getRequest } = require('../helpers/Api');
 const { Spot } = require('@binance/connector');
 const mainnet = new Spot(process.env.KEY, process.env.SECRET);
 const testnet = new Spot(process.env.TEST_KEY, process.env.TEST_SECRET, {
@@ -62,17 +62,6 @@ const listen_key = async (req, res) => {
   }
 };
 
-const deposit_history = async (req, res) => {
-  mainnet
-    .depositHistory()
-    .then((response) => {
-      res.status(200).json(response);
-    })
-    .catch((err) => {
-      mainnet.logger.error(err.response.data);
-      res.status(500).json({ message: err.response.data.msg });
-    });
-};
 const assets_balance = async (req, res) => {
   testnet
     .account()
@@ -96,5 +85,4 @@ module.exports = {
   ticker,
   listen_key,
   assets_balance,
-  deposit_history,
 };

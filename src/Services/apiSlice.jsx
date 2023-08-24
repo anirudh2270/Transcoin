@@ -71,6 +71,9 @@ export const apiSlice = createApi({
     assets_balance: builder.query({
       query: () => '/binance/assets_balance',
     }),
+    convert_pairs: builder.query({
+      query: () => '/binance/a',
+    }),
   }),
 });
 
@@ -83,4 +86,5 @@ export const {
   useTickerQuery,
   useListen_keyQuery,
   useAssets_balanceQuery,
+  useConvert_pairsQuery,
 } = apiSlice;

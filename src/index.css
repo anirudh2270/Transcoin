@@ -171,8 +171,8 @@ details:open {
 }
 
 ::placeholder {
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: 0.85rem;
+  font-weight: 500;
   color: var(--text_secondary);
 }
 
@@ -330,7 +330,17 @@ details:open {
 
 }
 
+/* Works for Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 
+/* Works for Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
 
 
 

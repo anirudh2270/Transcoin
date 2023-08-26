@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 export const Asset_balance = createSlice({
   name: 'asset_balance',
   initialState: {
-    data: '',
+    data: [],
   },
   reducers: {
     update_balance: (state, actions) => {

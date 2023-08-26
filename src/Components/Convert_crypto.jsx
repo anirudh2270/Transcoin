@@ -2,40 +2,60 @@ import { ChevronUpDownIcon } from '@heroicons/react/24/outline';
 import { useCurrency_pairsQuery } from '../Services/apiSlice.jsx';
 import React, { useEffect, useState } from 'react';
 import { VariableSizeList as List } from 'react-window';
+import { shallowEqual, useSelector } from 'react-redux';
+import { useCallback } from 'react';
+import { useMemo } from 'react';
 
-export function Convert_select() {
+export function Convert_select(props) {
   const [pair, setPairs] = useState([]);
   const [open, setOpen] = useState(false);
-  const [selected, setSelected] = useState({ id: 1, name: 'ETH' });
+  const [selected, setSelected] = useState('ETH');
   const [query, setQuery] = useState('');
+  const [input, setInput] = useState('');
   const binance_pairs = useCurrency_pairsQuery();
+  const assets_balance = useSelector(
+    (state) => state.Asset_balance.data[selected],
+    shallowEqual
+  );
 
   useEffect(() => {
     if (binance_pairs.data) {
       let a = [];
       for (let i = 0; i < binance_pairs.data.length; i++) {
-        a.push({ id: i, name: binance_pairs.data[i].baseAsset });
+        a.push(binance_pairs.data[i].baseAsset);
       }
+
       setPairs(a);
     }
   }, [binance_pairs.data]);
 
-  const filteredpair =
-    query === ''
+  const handleChange = useCallback(
+    (e) => {
+      if (e.target.value > Number(assets_balance.free)) {
+        alert();
+      }
+      setInput(e.target.value);
+    },
+    [assets_balance?.free]
+  );
+
+  const filteredpair = useMemo(() => {
+    return query === ''
       ? pair
       : pair.filter((pair) =>
-          pair.name
+          pair
             .toLowerCase()
             .replace(/\s+/g, '')
             .includes(query.toLowerCase().replace(/\s+/g, ''))
         );
+  }, [pair, query]);
 
   const options = ({ index, style }) => (
     <div
       style={style}
       onClick={() => {
         setSelected(filteredpair[index]);
-        setQuery(filteredpair[index].name);
+        setQuery(filteredpair[index]);
         setOpen(!open);
       }}
       key={index}
@@ -44,20 +64,38 @@ export function Convert_select() {
       <img
         width={28}
         height={28}
-        src={`/crypto_icons/${filteredpair[index].name.toLowerCase()}.png`}
+        src={`/crypto_icons/${filteredpair[index].toLowerCase()}.png`}
         onError={(e) => {
           e.currentTarget.src = '/crypto_icons/not_found.png';
         }}
         alt=''
       />
       <span className='text-sm font-medium text-gray-600'>
-        {filteredpair[index].name}
+        {filteredpair[index]}
       </span>
     </div>
   );
 
   return (
     <>
+      <div className='flex justify-between items-center'>
+        <label
+          htmlFor='from'
+          className='block  text-sm font-medium leading-6 text-text_secondary'
+        >
+          {props.lable}
+        </label>
+
+        {props.show_balance ? (
+          <span className='text-sm font-medium leading-6 text-text_secondary'>
+            Available :
+            <span className='text-black ms-2 font-semibold'>
+              {assets_balance?.free || 0}
+            </span>
+          </span>
+        ) : null}
+      </div>
+
       <div className='flex gap-3 items-center relative'>
         {/* input */}
         <div className='relative mt-2 rounded-md shadow-sm w-full flex-grow'>
@@ -65,7 +103,7 @@ export function Convert_select() {
             <span className=''>
               <img
                 width={25}
-                src={`/crypto_icons/${selected.name.toLowerCase()}.png`}
+                src={`/crypto_icons/${selected.toLowerCase()}.png`}
                 onError={(e) => {
                   e.currentTarget.src = '/crypto_icons/not_found.png';
                 }}
@@ -74,10 +112,12 @@ export function Convert_select() {
             </span>
           </div>
           <input
-            type='text'
+            type='number'
             name='price'
             id='price'
-            className='block bg-[#F5F4F6] w-full rounded-lg border-0 py-2.5 pl-10 pr-20 text-gray-900 '
+            onChange={(e) => handleChange(e)}
+            placeholder={props.placeholder || ''}
+            className='block bg-[#F5F4F6] w-full rounded-lg border-0 py-2.5 pl-12 pr-20 text-gray-900 '
           />
         </div>
 
@@ -91,9 +131,9 @@ export function Convert_select() {
                   setOpen(true);
                 }
               }}
-              placeholder={selected.name}
+              placeholder={selected}
               onChange={(e) => setQuery(e.target.value)}
-              value={!open ? selected.name : query}
+              value={!open ? selected : query}
               type='text'
               name='price'
               id='price'
@@ -138,7 +178,7 @@ export function Convert_select() {
               <List
                 height={150}
                 itemCount={filteredpair.length}
-                itemSize={() => 45}
+                itemSize={() => 43}
                 width={140}
               >
                 {options}
@@ -155,25 +195,15 @@ export default function Convert_crypto() {
   return (
     <>
       <div className='my-6'>
-        <label
-          htmlFor='from'
-          className='block text-sm font-medium leading-6 text-text_secondary'
-        >
-          From
-        </label>
-
-        <Convert_select />
+        <Convert_select
+          lable={'From'}
+          show_balance={true}
+          placeholder={'Enter Amount'}
+        />
       </div>
 
       <div className='my-6'>
-        <label
-          htmlFor='from'
-          className='block text-sm font-medium leading-6 text-text_secondary'
-        >
-          To
-        </label>
-
-        <Convert_select />
+        <Convert_select lable={'To'} placeholder={'Enter Amount'} />
       </div>
 
       <div className='mt-6'>

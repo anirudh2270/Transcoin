@@ -5,8 +5,9 @@ import { VariableSizeList as List } from 'react-window';
 import { shallowEqual, useSelector } from 'react-redux';
 import { useCallback } from 'react';
 import { useMemo } from 'react';
+import { useForm } from 'react-hook-form';
 
-export function Convert_select(props) {
+export function Convert_select({ register, ...props }) {
   const [pair, setPairs] = useState([]);
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState('ETH');
@@ -14,7 +15,7 @@ export function Convert_select(props) {
   const [input, setInput] = useState('');
   const binance_pairs = useCurrency_pairsQuery();
   const assets_balance = useSelector(
-    (state) => state.Asset_balance.data[selected],
+    (state) => (props.show_balance ? state.Asset_balance.data[selected] : {}),
     shallowEqual
   );
 
@@ -31,12 +32,19 @@ export function Convert_select(props) {
 
   const handleChange = useCallback(
     (e) => {
-      if (e.target.value > Number(assets_balance.free)) {
-        alert();
+      const inp = document.getElementById('price');
+      if (e.target.value > Number(assets_balance.free) && props.show_balance) {
+        if (inp.classList.contains('border-0')) {
+          inp.classList.replace('border-0', 'border-1');
+        }
+      } else {
+        if (inp.classList.contains('border-1')) {
+          inp.classList.replace('border-1', 'border-0');
+        }
       }
       setInput(e.target.value);
     },
-    [assets_balance?.free]
+    [assets_balance?.free, props.show_balance]
   );
 
   const filteredpair = useMemo(() => {
@@ -115,15 +123,16 @@ export function Convert_select(props) {
             type='number'
             name='price'
             id='price'
+            {...register(props.lable, { required: true })}
             onChange={(e) => handleChange(e)}
             placeholder={props.placeholder || ''}
-            className='block bg-[#F5F4F6] w-full rounded-lg border-0 py-2.5 pl-12 pr-20 text-gray-900 '
+            className='block bg-[#F5F4F6] w-full border-0 border-red-600 focus:border-red-600 focus:ring-0 rounded-lg  py-2.5 pl-12 pr-20 text-gray-900 '
           />
         </div>
 
         {/* select */}
 
-        <div className='absolute right-[0rem]  top-[0.2rem]  mt-2 rounded-md shadow-sm'>
+        <div className='absolute right-[0.2rem]  top-[0.25rem]  mt-2 rounded-md shadow-sm'>
           <div className='relative'>
             <input
               onKeyUp={() => {
@@ -192,25 +201,42 @@ export function Convert_select(props) {
 }
 
 export default function Convert_crypto() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (data) => console.log(data);
   return (
     <>
-      <div className='my-6'>
-        <Convert_select
-          lable={'From'}
-          show_balance={true}
-          placeholder={'Enter Amount'}
-        />
-      </div>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className='my-6'>
+          <Convert_select
+            lable={'From'}
+            show_balance={true}
+            placeholder={'Enter Amount'}
+            register={register}
+          />
+        </div>
 
-      <div className='my-6'>
-        <Convert_select lable={'To'} placeholder={'Enter Amount'} />
-      </div>
+        <div className='my-6'>
+          <Convert_select
+            lable={'To'}
+            placeholder={'Enter Amount'}
+            register={register}
+          />
+        </div>
 
-      <div className='mt-6'>
-        <button className='w-full py-2.5 rounded-lg gradiant_bg text-white font-semibold text-center'>
-          Proceed
-        </button>
-      </div>
+        <div className='mt-6'>
+          <button
+            type='submit'
+            className='w-full py-2.5 rounded-lg gradiant_bg text-white font-semibold text-center'
+          >
+            Proceed
+          </button>
+        </div>
+      </form>
     </>
   );
 }

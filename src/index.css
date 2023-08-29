@@ -176,6 +176,7 @@ details:open {
   color: var(--text_secondary);
 }
 
+
 /* width */
 ::-webkit-scrollbar {
   width: 5px;

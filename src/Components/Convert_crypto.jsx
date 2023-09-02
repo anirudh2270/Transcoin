@@ -7,17 +7,12 @@ import { useCallback } from 'react';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 
-export function Convert_select({ register, ...props }) {
+export function Convert_select({ register, setSelected, selected, ...props }) {
   const [pair, setPairs] = useState([]);
   const [open, setOpen] = useState(false);
-  const [selected, setSelected] = useState('ETH');
   const [query, setQuery] = useState('');
   const [input, setInput] = useState('');
   const binance_pairs = useCurrency_pairsQuery();
-  const assets_balance = useSelector(
-    (state) => (props.show_balance ? state.Asset_balance.data[selected] : {}),
-    shallowEqual
-  );
 
   useEffect(() => {
     if (binance_pairs.data) {
@@ -33,7 +28,7 @@ export function Convert_select({ register, ...props }) {
   const handleChange = useCallback(
     (e) => {
       const inp = document.getElementById('price');
-      if (e.target.value > Number(assets_balance.free) && props.show_balance) {
+      if (e.target.value > Number(props.assets_balance) && props.show_balance) {
         if (inp.classList.contains('border-0')) {
           inp.classList.replace('border-0', 'border-1');
         }
@@ -44,7 +39,7 @@ export function Convert_select({ register, ...props }) {
       }
       setInput(e.target.value);
     },
-    [assets_balance?.free, props.show_balance]
+    [props.assets_balance, props.show_balance]
   );
 
   const filteredpair = useMemo(() => {
@@ -62,7 +57,10 @@ export function Convert_select({ register, ...props }) {
     <div
       style={style}
       onClick={() => {
-        setSelected(filteredpair[index]);
+        const update_pair = [...selected];
+        update_pair[props.index].name = filteredpair[index];
+        setSelected(update_pair);
+
         setQuery(filteredpair[index]);
         setOpen(!open);
       }}
@@ -98,20 +96,19 @@ export function Convert_select({ register, ...props }) {
           <span className='text-sm font-medium leading-6 text-text_secondary'>
             Available :
             <span className='text-black ms-2 font-semibold'>
-              {assets_balance?.free || 0}
+              {props.balance || 0}
             </span>
           </span>
         ) : null}
       </div>
 
       <div className='flex gap-3 items-center relative'>
-        {/* input */}
         <div className='relative mt-2 rounded-md shadow-sm w-full flex-grow'>
           <div className='pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3'>
             <span className=''>
               <img
                 width={25}
-                src={`/crypto_icons/${selected.toLowerCase()}.png`}
+                src={`/crypto_icons/${props.name.toLowerCase()}.png`}
                 onError={(e) => {
                   e.currentTarget.src = '/crypto_icons/not_found.png';
                 }}
@@ -130,8 +127,6 @@ export function Convert_select({ register, ...props }) {
           />
         </div>
 
-        {/* select */}
-
         <div className='absolute right-[0.2rem]  top-[0.25rem]  mt-2 rounded-md shadow-sm'>
           <div className='relative'>
             <input
@@ -140,9 +135,9 @@ export function Convert_select({ register, ...props }) {
                   setOpen(true);
                 }
               }}
-              placeholder={selected}
+              placeholder={props.name}
               onChange={(e) => setQuery(e.target.value)}
-              value={!open ? selected : query}
+              value={!open ? props.name : query}
               type='text'
               name='price'
               id='price'
@@ -201,6 +196,31 @@ export function Convert_select({ register, ...props }) {
 }
 
 export default function Convert_crypto() {
+  const [selected, setSelected] = useState([
+    {
+      name: 'ETH',
+      lable: 'From',
+      show_balance: true,
+      placeholder: 'Enter Amount',
+    },
+    {
+      name: 'BTC',
+      lable: 'To',
+      show_balance: false,
+      placeholder: 'Enter Amount',
+    },
+  ]);
+
+  console.log(selected);
+
+  const asset_balance = useSelector((state) => {
+    let a = [];
+    for (let i = 0; i < selected.length; i++) {
+      a.push(state.Asset_balance.data[selected[i].name]);
+    }
+    return a;
+  }, shallowEqual);
+
   const {
     register,
     handleSubmit,
@@ -211,22 +231,23 @@ export default function Convert_crypto() {
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className='my-6'>
-          <Convert_select
-            lable={'From'}
-            show_balance={true}
-            placeholder={'Enter Amount'}
-            register={register}
-          />
-        </div>
-
-        <div className='my-6'>
-          <Convert_select
-            lable={'To'}
-            placeholder={'Enter Amount'}
-            register={register}
-          />
-        </div>
+        {selected?.map((asset, index) => {
+          return (
+            <div className='my-6' key={index}>
+              <Convert_select
+                selected={selected}
+                index={index}
+                name={asset.name}
+                setSelected={setSelected}
+                lable={asset.lable}
+                show_balance={asset.show_balance}
+                placeholder={asset.placeholder}
+                register={register}
+                balance={asset_balance[index]?.free}
+              />
+            </div>
+          );
+        })}
 
         <div className='mt-6'>
           <button
